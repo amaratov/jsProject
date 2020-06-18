@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Tree Form</title>
+    <link rel="stylesheet" href="file/main.css" />
+  </head>
+  <body onload="display()">
+    <main>
+      <h1 style="text-align: center;">Project Alisher Maratov</h1>
+      <!-- ----------------Video Device-------------------------------------->
+      <div class="table">
+        <div class="top">
+          <h2>
+            Video Device
+          </h2>
+        </div>
+        <div id="test">
+          Status(On/Off) <br/>
+          <input type="checkbox" id="vDStatus" /><br/>
+          Replacement Cost<br/>
+          <input type="text" id="repCost" name="rplCost" class="form-el" /><br/>
+          Supplier Name <br/>
+          <input type="text" id="supName" name="supName" class="form-el" /><br/>
+          Serial Number<br/>
+          <input type="text" id="serNum" name="srlNum" class="form-el" /><br/>
+          Resolution<br/>
+          <input type="text" id="resoL" name="res" class="form-el" /><br/>
+          Type<br/>
+          <select id="Type">
+            <option selected>Select</option>
+            <option value="LCD" id="lcd">LCD</option>
+            <option value="LED" id="led">LED</option>
+            <option value="Plasma" id="pls">Plasma</option>
+          </select>
+        </div>
+        <br />
+        <br />
+        <div>
+          <button onclick="pVideoDevice()" class="btn1">
+            Previous
+          </button>
+          <button onclick="nVideoDevice()" class="btn1">Next</button>
+          <br />
+          <br />
+          <button onclick="newDevice()" class="btn1">New</button>
+          <button class="btn1">Update</button>
+        </div>
+      </div>
+      <!-- ----------------------Hard Disk--------------------------------------------------->
+      <div class="table">
+        <div class="top">
+          <h2>
+            Hard Disk
+          </h2>
+        </div>
+        <div id="test">
+          Status(On/Off)<br/>
+          <input type="checkbox" id="hDstatus" /><br/>
+          Replacement Cost<br/>
+          <input type="text" id="repCost2" /><br/>
+          Supplier Name<br/>
+          <input type="text" id="supName2" /><br/>
+          Serial Number<br/>
+          <input type="text" id="serNum2" /><br/>
+          Size<br/>
+          <input type="text" id="size2" /><br/>
+          Transfer rate<br/>
+          <input type="text" id="traRate2" /><br/>
+          Platter Size<br/>
+          <input type="text" id="plaSize2" /><br/>
+          Number of Platters<br/>
+          <input type="text" id="numOfPla" /><br/>
+        </div>
+        <br />
+        <br />
+        <div>
+          <button onclick="pHardD()" class="btn1">Previous</button>
+          <button onclick="nHardD()" class="btn1">Next</button> <br />
+          <br />
+          <button onclick="newHardD()" class="btn1">New</button>
+          <button class="btn1">Update</button>
+        </div>
+      </div>
+      <!-- --------------------------SSD------------------------------------------------->
+      <div class="table">
+        <div class="top">
+          <h2>
+            SSD
+          </h2>
+        </div>
+        <div id="test">
+          <br/>Status(On/Off)<br/>
+          <input type="checkbox" id="ssD"/><br/>
+          Replacement Cost<br/>
+          <input type="text" id="repCost3" /><br/>
+          Supplier Name<br/>
+          <input type="text" id="supName3" /><br/>
+          Serial Number<br/>
+          <input type="text" id="serNum3" /><br/>
+          Size<br/>
+          <input type="text" id="size3" /><br/>
+          Transfer rate<br/>
+          <input type="text" id="traRate3" /><br/>
+          Type<br/>
+          <select id="Type">
+            <option selected>Select</option>
+            <option value="Flash" id="flash">Flash</option>
+            <option value="Dram" id="dram">DRAM</option>
+          </select>
+          <h3>Wear Leveling</h3>
+          <input type="checkbox" id="wear"/>
+        </div>
+        <br />
+        <br />
+        <div>
+          <button onclick="previousSSD()" class="btn1">Previous</button>
+          <button onclick="nextSSD()" class="btn1">Next</button> <br />
+          <br />
+          <button onclick="addSSD()" class="btn1">New</button>
+          <button class="btn1">Update</button>
+        </div>
+      </div>
+      </main>
+<!------------------------------------------------------------------------------------------------------------->   
+	<script type="text/javascript">
+    //Creating classes for the Device
+             class Device{
+                constructor(status){
+                    this._status = false;
+                    this.replacementCost = 0;
+                    this.supplierName = "";
+                    this.serialNumber = "";        
+                }               
+                enable(){
+                    this._status = 1;
+                }                
+                disable(){
+                    this._status = 0;
+                }               
+                status(){
+                    return this._status;
+                }               
+            }
+            //inheritence classes for VideoDevice DiskDevice
+            class VideoDevice extends Device{
+                constructor(){  
+                    super();
+                    this.resolution = "";
+                    this.type = "";
+                }
+            }
+            class DiskDevice extends Device{
+                constructor(){
+                    super();
+                    this.size = "";
+                    this.transferRate = "";
+                }
+            }
+            //inheritence classes for hardDISK SSD
+            class HardDisk extends DiskDevice{
+                constructor(){
+                    super();
+                    this.platterSize = "";
+                    this.numOfPlatters = 0;
+                }
+            }
+            class SSD extends DiskDevice{
+                constructor(){
+                    super();
+                    this.type = "";
+                    this.wearLeveling = false;
+                }
+            } 
+
+/////------------------------------------VIDEO DEVICE----------------------------------------------------------->//
+            //Global variables 
+			      var index1 = -1;
+            var index2 = -1;
+            var index3 = -1;
+            var videoDevices = [];
+            var hardDisks = [];
+            var SSDs = [];
+            //class V
+            function newDevice(){
+                var video_device = new VideoDevice();
+                console.log(VideoDevice);
+                
+                if(document.getElementById("vDStatus").checked == true)
+                    video_device.enable();
+                else if(document.getElementById("vDStatus").checked == false)
+                    video_device.disable();
+
+                video_device.replacementCost = document.getElementById("repCost").value;
+                video_device.serialNumber = document.getElementById("serNum").value;
+                video_device.supplierName = document.getElementById("supName").value;
+                video_device.resolution = document.getElementById("resoL").value;
+
+                if(document.getElementById("lcd").checked == true){
+                    video_device.type = "LCD";
+                }else if(document.getElementById("led").checked == true){
+                   video_device.type = "LED";
+                }else if(document.getElementById("pls").checked = true){
+                    video_device.type = "Plasma";
+                }
+                
+                videoDevices.push(video_device);
+                index1++;
+                
+                reset();
+                index1++;
+                }
+
+                function reset(){
+                document.getElementById("vDStatus").checked = false;
+                document.getElementById("repCost").value = "";
+                document.getElementById("supName").value = "";
+                document.getElementById("serNum").value = "";
+                document.getElementById("resoL").value = "";
+                document.getElementById("lcd").checked = true;
+                }
+
+            function nVideoDevice(){
+                index1++;
+                if(index1 < videoDevices.length ){
+                    displayVideoDevice(index1);
+                }else{
+                    index1--;  
+                    alert("please create New Video Device");
+                }
+            }
+
+            function pVideoDevice(){
+                index1--;
+                if(index1 >= 0)
+                    displayVideoDevice(index1);    
+                else
+                    index1++;    
+            }
+            //storing data
+            function displayVideoDevice(index){
+                if(videoDevices.length > 0){
+                    if(videoDevices[index].status() == 1){
+                        document.getElementById("vDStatus").checked = true;
+                    }else{
+                        document.getElementById("vDStatus").checked = false;
+                    }
+                    
+                    document.getElementById("serNum").value = videoDevices[index].serialNumber;
+                    document.getElementById("repCost").value = videoDevices[index].replacementCost;
+                    document.getElementById("supName").value = videoDevices[index].supplierName;
+                    document.getElementById("resoL").value = videoDevices[index].resolution;
+                    
+                    if(videoDevices[index].type == "LCD"){
+                        document.getElementById("lcd").checked = true;
+                    }else if(videoDevices[index].type == "LED"){
+                        document.getElementById("led").checked = true;
+                    }else if(videoDevices[index].type == "Plasma"){
+                        document.getElementById("plasma").checked = true;
+                    }
+                }
+            }
+
+//<!--------------------------------HARD DISK---------------------------------------------------------------------------->
+
+            function newHardD(){
+                var cls = new VideoDevice(); 
+                console.log(VideoDevice);              
+                if(document.getElementById("hDstatus").checked == true)
+                    cls.enable();
+                else if(document.getElementById("hDstatus").checked == false)
+                    cls.disable();    
+                //getting value by id
+                cls.replacementCost = document.getElementById("repCost2").value;
+                cls.serialNumber = document.getElementById("supName2").value;
+                cls.supplierName = document.getElementById("serNum2").value;
+                cls.size = document.getElementById("size2").value;
+                cls.transferRate = document.getElementById("traRate2").value;
+                cls.platterSize = document.getElementById("plaSize2").value;
+                cls.numOfPlatters = document.getElementById("numOfPla").value;
+                
+                hardDisks.push(cls);
+                index2++;
+                
+                resetHardDisk();
+                index2++;
+
+            }
+
+            function resetHardDisk(){
+                 document.getElementById("serNum2").checked = false;
+                 document.getElementById("repCost2").value= "";
+                document.getElementById("supName2").value = "";
+                document.getElementById("serNum2").value = "";
+                document.getElementById("size2").value = "";
+                document.getElementById("traRate2").value = "";
+                document.getElementById("plaSize2").value = "";
+                document.getElementById("numOfPla").value = "";
+             }
+
+            function nHardD(){
+                index2++;
+                if(index2 < hardDisks.length ){
+                    displayHardDisk(index2);
+                }else{
+                    index2--;  
+                    alert("please create New Hard Disk");
+                }
+            }
+
+            function pHardD(){
+                index2--;
+                if(index2 >= 0)
+                    displayHardDisk(index2);    
+                else
+                    index2++;    
+            }
+            //stroting 
+            function displayHardDisk(index){
+                if(hardDisks.length > 0){
+                    if(hardDisks[index].status() == 1){
+                        document.getElementById("hDstatus").checked = true;
+                    }else{
+                        document.getElementById("hDstatus").checked = false;
+                    }
+                    
+                    document.getElementById("repCost2").value = hardDisks[index].serialNumber;
+                    document.getElementById("supName2").value = hardDisks[index].replacementCost;
+                    document.getElementById("serNum2").value = hardDisks[index].supplierName;
+                    document.getElementById("size2").value = hardDisks[index].size;
+                    document.getElementById("traRate2").value = hardDisks[index].transferRate;
+                    document.getElementById("plaSize2").value = hardDisks[index].platterSize;
+                    document.getElementById("numOfPla").value = hardDisks[index].numOfPlatters;
+                }
+            }
+//<!----------------------------------SSD------------------------------------------------------------------------------>
+                function addSSD(){
+                var cls = new VideoDevice();
+                console.log(VideoDevice); 
+                
+                if(document.getElementById("ssD").checked == true)
+                    cls.enable();
+                else if(document.getElementById("ssD").checked == false)
+                    cls.disable();    
+
+                cls.replacementCost = document.getElementById("repCost3").value;
+                cls.supplierName = document.getElementById("supName3").value;
+                cls.serialNumber = document.getElementById("serNum3").value; 
+                cls.size = document.getElementById("size3").value;
+                cls.transferRate = document.getElementById("traRate3").value;
+                if(document.getElementById("flash").checked == true){
+                    cls.type = "Flash";
+                }else if(document.getElementById("dram").checked == true){
+                    cls.type = "DRAM";        
+                }
+                cls.wearLeveling = false ;
+
+                SSDs.push(cls);
+                index3++;
+                
+                resetSSD();
+                index3++;
+            }
+            function resetSSD(){
+                document.getElementById("ssD").checked = false;
+                document.getElementById("repCost3").value = "";
+                document.getElementById("supName3").value = "";
+                document.getElementById("serNum3").value = "";
+                document.getElementById("size3").value = "";
+                document.getElementById("traRate3").value = "";
+                document.getElementById("flash").checked = true;
+                document.getElementById("wear").checked = false;
+            }
+            function nextSSD(){
+                index3++;
+                if(index3 < SSDs.length ){
+                    displaySSD(index3);
+                }else{
+                    index3--;  
+                    alert("please create New SSD");
+                }
+            }
+            function previousSSD(){
+                index3--;
+                if(index3 >= 0)
+                    displaySSD(index3);    
+                else
+                    index3++;    
+            }
+            function displaySSD(index){
+                if(SSDs.length > 0){
+                    if(SSDs[index].status() == 1){
+                        document.getElementById("ssD").checked = true;
+                    }else{
+                        document.getElementById("ssD").checked = false;
+                    }
+                    document.getElementById("repCost3").value = SSDs[index].replacementCost;
+                    document.getElementById("supName3").value = SSDs[index].supplierName;
+                    document.getElementById("serNum3").value = SSDs[index].serialNumber;
+                    document.getElementById("size3").value = SSDs[index].size;
+                    document.getElementById("traRate3").value = SSDs[index].transferRate;
+                    if(SSDs[index].type == ""){
+                        document.getElementById("flash").value = "Flash";
+                    }else if(SSDs[index].type){
+                        document.getElementById("dram").value = "DRAM";        
+                    }
+                    document.getElementById("wear").value = SSDs[index].wearLeveling;
+                }
+            }
+
+//<!----------------------------------DISPLAYING------------------------------------------------------------------------->
+
+	             function display(){
+                var video_device1= new VideoDevice();
+                video_device1.disable();
+                video_device1.replacementCost = 150;
+                video_device1.serialNumber = "t10001";
+                video_device1.supplierName = "DELL";
+                video_device1.resolution = "1000 x 1000";
+                videoDevices.push(video_device1);
+                index1++;    
+
+                var clsH= new HardDisk();
+                clsH.disable();
+                clsH.replacementCost = 250;
+                clsH.serialNumber = "D10001";
+                clsH.supplierName = "Western ";
+                clsH.size = "8TB";
+                clsH.transferRate = "12 GB / Second";
+                clsH.platterSize = "4.7 inches";
+                clsH.numOfPlatters = 5;                
+                hardDisks.push(clsH);
+                index2++;
+               
+                var clsH= new VideoDevice();
+                clsH.disable();
+                clsH.replacementCost = 350;
+                clsH.serialNumber = "H21856";
+                clsH.supplierName = "Hitachi";
+                clsH.size = "4 TB";
+                clsH.transferRate = "10 GB / Second";
+                clsH.type = "DRAM";
+                clsH.wearLeveling = false;
+
+                SSDs.push(clsH);
+                index3++;
+                displayVideoDevice(0);
+                displayHardDisk(0);
+                displaySSD(0);   
+            } 
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+body {
+	      background-color: #9CC3D5FF;
+}
+
+main {
+	margin: auto;
+	width: 80%;
+}
+
+.table {
+	 text-align: center;
+      border-width: 11px;
+      display: inline-block;
+      background-color: #126bf2de;
+}
+
+.top {
+	  width: 335px;
+	  height: 50px;
+	  color: #61747669;
+	  border-style: solid;
+}
+
+h2 {
+	color: black;
+	font-family: 'Permanent Marker', cursive;
+}
+
+.btn1 {
+	font-size: 22px;
+	text-align: center;
+	width: 160px;
+	color: black;
+}
+
+#test {
+	 height: 360px;
+}
