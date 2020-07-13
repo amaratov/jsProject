@@ -1,4 +1,4 @@
-# jsProject
+# Device Tree project
 
 The main concept here is to create a siulated controller
 that allows all devices of a spcific type to be monitored,
